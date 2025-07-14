@@ -1,0 +1,41 @@
+const malla = {
+  "Semestre 1": ["Matematica 1", "Programacion", "FAN 1", "Taller de comunicacion 1"],
+  "Semestre 2": ["Matematica 2", "Microeconomia 1", "Contabilidad 1", "FAN 2", "Ingles 3"],
+  "Semestre 3": ["Matematica 3", "Macroeconomia 1", "TyE", "Taller de comunicacion 2"],
+  "Semestre 4": ["Estadistica 2", "Microeconomia 2", "Contabilidad 2", "Personas y Equipos", "Taller de liderazgo y trabajo en equipo", "Ingles 4"],
+  "Semestre 5": ["Econometria 1", "Macroeconomia 2", "Finanzas 1", "Estrategia", "Taller de etica en la toma de decisiones"],
+  "Semestre 6": ["Ciencia de datos", "Globaalizacion y sustentabilidad", "Gestion de operaciones", "Marketing", "CFG 1"],
+  "Semestre 7": ["Fundamento economico de la organizacion", "Finanzas 2", "Recursos humanos", "Taller de emprendimiento", "CFG 2"],
+  "Semestre 8": ["Ciencia de datos para los negocios", "Implementacion estrategica", "Derecho para los negocios", "Taller de juego de negocios", "CFG 3"],
+  "Semestre 9": [],
+  "Semestre 10": []
+};
+
+const detalles = {
+  "Matematica 1": "Álgebra básica. Sin prerrequisitos.",
+  "Programacion": "Lógica y fundamentos. Sin prerrequisitos.",
+  // Puedes ir completando más materias aquí
+};
+
+const contenedor = document.getElementById("malla");
+const infoBox = document.getElementById("infoMateria");
+
+for (let semestre in malla) {
+  const div = document.createElement("div");
+  div.classList.add("semestre");
+  const titulo = document.createElement("h2");
+  titulo.textContent = semestre;
+  div.appendChild(titulo);
+
+  malla[semestre].forEach(materia => {
+    const boton = document.createElement("div");
+    boton.classList.add("materia");
+    boton.textContent = materia;
+    boton.onclick = () => {
+      infoBox.textContent = detalles[materia] || `No hay detalles disponibles para "${materia}" todavía.`;
+    };
+    div.appendChild(boton);
+  });
+
+  contenedor.appendChild(div);
+}
