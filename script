@@ -1,41 +1,87 @@
-const malla = {
-  "Semestre 1": ["Matematica 1", "Programacion", "FAN 1", "Taller de comunicacion 1"],
-  "Semestre 2": ["Matematica 2", "Microeconomia 1", "Contabilidad 1", "FAN 2", "Ingles 3"],
-  "Semestre 3": ["Matematica 3", "Macroeconomia 1", "TyE", "Taller de comunicacion 2"],
-  "Semestre 4": ["Estadistica 2", "Microeconomia 2", "Contabilidad 2", "Personas y Equipos", "Taller de liderazgo y trabajo en equipo", "Ingles 4"],
-  "Semestre 5": ["Econometria 1", "Macroeconomia 2", "Finanzas 1", "Estrategia", "Taller de etica en la toma de decisiones"],
-  "Semestre 6": ["Ciencia de datos", "Globaalizacion y sustentabilidad", "Gestion de operaciones", "Marketing", "CFG 1"],
-  "Semestre 7": ["Fundamento economico de la organizacion", "Finanzas 2", "Recursos humanos", "Taller de emprendimiento", "CFG 2"],
-  "Semestre 8": ["Ciencia de datos para los negocios", "Implementacion estrategica", "Derecho para los negocios", "Taller de juego de negocios", "CFG 3"],
-  "Semestre 9": [],
-  "Semestre 10": []
+const ramos = {
+  'Matematica 1': ['Matematica 2', 'Macroeconomia 1'],
+  'Programacion': ['Estadistica 1', 'TyE'],
+  'FAN 1': ['FAN 2'],
+  'Taller de comunicacion 1': ['Taller de comunicacion 2'],
+  'Matematica 2': ['Matematica 3', 'Estadistica 1', 'Microeconomia 2'],
+  'Microeconomia 1': ['Macroeconomia 1', 'Microeconomia 2'],
+  'Contabilidad 1': ['Contabilidad 2'],
+  'FAN 2': ['Personas y Equipos', 'Taller de liderazgo y trabajo en equipo'],
+  'Matematica 3': ['Econometria 1', 'Macroeconomia 2'],
+  'Macroeconomia 1': ['Macroeconomia 2'],
+  'TyE': ['Contabilidad 2', 'Estrategia', 'Ciencia de datos'],
+  'Taller de comunicacion 2': ['Taller de liderazgo y trabajo en equipo'],
+  'Estadistica 1': ['Estadistica 2'],
+  'Estadistica 2': ['Econometria 1', 'Finanzas 1', 'Globalizacion y sustentabilidad', 'Gestion de operaciones', 'Marketing'],
+  'Microeconomia 2': ['Fundamento economico de la organizacion'],
+  'Contabilidad 2': ['Finanzas 1'],
+  'Personas y Equipos': ['Estrategia', 'Taller de etica en la toma de decisiones', 'Recursos humanos'],
+  'Taller de liderazgo y trabajo en equipo': ['Taller de etica en la toma de decisiones'],
+  'Econometria 1': ['Ciencia de datos'],
+  'Macroeconomia 2': ['Globalizacion y sustentabilidad'],
+  'Finanzas 1': ['Finanzas 2', 'Taller de juego de negocios'],
+  'Estrategia': ['Globalizacion y sustentabilidad', 'Gestion de operaciones', 'Marketing', 'Recursos humanos', 'Implementacion estrategica'],
+  'Taller de etica en la toma de decisiones': ['Taller de emprendimiento'],
+  'Ciencia de datos': ['Finanzas 2', 'Ciencia de datos para los negocios'],
+  'Globalizacion y sustentabilidad': ['Fundamento economico de la organizacion', 'Implementacion estrategica'],
+  'Marketing': ['Taller de emprendimiento'],
+  'Finanzas 2': ['Implementacion estrategica'],
+  'Recursos humanos': ['Derecho para los negocios'],
+  'Taller de emprendimiento': ['Taller de juego de negocios']
 };
 
-const detalles = {
-  "Matematica 1": "Álgebra básica. Sin prerrequisitos.",
-  "Programacion": "Lógica y fundamentos. Sin prerrequisitos.",
-  // Puedes ir completando más materias aquí
-};
+const mallaContainer = document.querySelector('.malla');
+const botones = {};
 
-const contenedor = document.getElementById("malla");
-const infoBox = document.getElementById("infoMateria");
+// Inicializa todos los ramos
+Object.keys(ramos).forEach(nombre => {
+  const boton = document.createElement('div');
+  boton.className = 'ramo bloqueado';
+  boton.textContent = nombre;
+  boton.dataset.nombre = nombre;
+  mallaContainer.appendChild(boton);
+  botones[nombre] = boton;
+});
 
-for (let semestre in malla) {
-  const div = document.createElement("div");
-  div.classList.add("semestre");
-  const titulo = document.createElement("h2");
-  titulo.textContent = semestre;
-  div.appendChild(titulo);
+// Agrega también los ramos sin dependencias
+const adicionales = [
+  'Ingles 3', 'Ingles 4', 'Gestion de operaciones', 'CFG 1', 'CFG 2', 'CFG 3',
+  'Fundamento economico de la organizacion', 'Implementacion estrategica',
+  'Derecho para los negocios', 'Taller de juego de negocios', 'Ciencia de datos para los negocios'
+];
+adicionales.forEach(nombre => {
+  if (!botones[nombre]) {
+    const boton = document.createElement('div');
+    boton.className = 'ramo';
+    boton.textContent = nombre;
+    boton.dataset.nombre = nombre;
+    mallaContainer.appendChild(boton);
+    botones[nombre] = boton;
+  }
+});
 
-  malla[semestre].forEach(materia => {
-    const boton = document.createElement("div");
-    boton.classList.add("materia");
-    boton.textContent = materia;
-    boton.onclick = () => {
-      infoBox.textContent = detalles[materia] || `No hay detalles disponibles para "${materia}" todavía.`;
-    };
-    div.appendChild(boton);
+// Desbloquea los iniciales
+['Matematica 1','Programacion','FAN 1','Taller de comunicacion 1','Microeconomia 1','Contabilidad 1'].forEach(nombre => {
+  botones[nombre].classList.remove('bloqueado');
+});
+
+// Función para marcar ramo como aprobado y desbloquear
+function aprobar(nombre) {
+  const btn = botones[nombre];
+  if (btn.classList.contains('bloqueado') || btn.classList.contains('aprobado')) return;
+  btn.classList.add('aprobado');
+
+  (ramos[nombre] || []).forEach(dep => {
+    const desbloquear = Object.entries(ramos).every(([rama, deps]) => {
+      return !deps.includes(dep) || botones[rama].classList.contains('aprobado');
+    });
+    if (desbloquear && botones[dep]) {
+      botones[dep].classList.remove('bloqueado');
+    }
   });
-
-  contenedor.appendChild(div);
 }
+
+// Evento de clic
+Object.values(botones).forEach(btn => {
+  btn.addEventListener('click', () => aprobar(btn.dataset.nombre));
+});
