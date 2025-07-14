@@ -1,0 +1,31 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  padding: 30px;
+  background: #f9f9f9;
+  color: #333;
+}
+h1 {
+  text-align: center;
+  margin-bottom: 40px;
+}
+.semestre {
+  margin-bottom: 20px;
+}
+.semestre h2 {
+  background: #ddd;
+  padding: 10px;
+}
+.materia {
+  margin: 5px;
+  padding: 10px;
+  display: inline-block;
+  background: #e0e0ff;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.info-box {
+  margin-top: 30px;
+  padding: 20px;
+  background: #ffe0e0;
+  border-radius: 10px;
+}
